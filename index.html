@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <title>TikTok MAX</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #050505;
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 600px;
+      margin: auto;
+      padding: 25px 18px 40px;
+    }
+
+    .logo {
+      text-align: center;
+      margin: 15px 0 30px;
+    }
+
+    .logo h1 {
+      margin: 0;
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .logo p {
+      margin: 8px 0 0;
+      color: #999;
+      font-size: 14px;
+    }
+
+    .card {
+      background: #111;
+      border: 1px solid #252525;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 15px;
+    }
+
+    .upload {
+      border: 2px dashed #333;
+      border-radius: 18px;
+      padding: 35px 15px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .upload:active {
+      transform: scale(.99);
+    }
+
+    .upload-icon {
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+
+    .upload strong {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+
+    .upload span {
+      color: #888;
+      font-size: 13px;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .info {
+      display: none;
+      margin-top: 15px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 9px 0;
+      border-bottom: 1px solid #222;
+      font-size: 14px;
+    }
+
+    .info-row:last-child {
+      border-bottom: 0;
+    }
+
+    .label {
+      color: #888;
+    }
+
+    .value {
+      font-weight: 600;
+    }
+
+    label.title {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    select {
+      width: 100%;
+      background: #1b1b1b;
+      color: white;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      border: 0;
+      border-radius: 14px;
+      padding: 16px;
+      margin-top: 15px;
+      font-size: 17px;
+      font-weight: 800;
+      color: white;
+      background: #222;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .45;
+      cursor: default;
+    }
+
+    .process {
+      background: white;
+      color: black;
+    }
+
+    .progress-box {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 8px;
+      color: #aaa;
+    }
+
+    .progress {
+      height: 8px;
+      width: 100%;
+      background: #252525;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .bar {
+      width: 0%;
+      height: 100%;
+      background: white;
+      transition: width .2s;
+    }
+
+    .status {
+      text-align: center;
+      color: #aaa;
+      font-size: 13px;
+      margin-top: 12px;
+      min-height: 20px;
+    }
+
+    .download {
+      display: none;
+      background: white;
+      color: black;
+      text-decoration: none;
+      text-align: center;
+      padding: 16px;
+      border-radius: 14px;
+      font-weight: 800;
+      margin-top: 15px;
+    }
+
+    .note {
+      color: #777;
+      font-size: 12px;
+      line-height: 1.7;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .warning {
+      color: #aaa;
+      font-size: 12px;
+      line-height: 1.7;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <div class="logo">
+    <h1>TikTok MAX</h1>
+    <p>ضغط الفيديو مع الحفاظ على أعلى جودة ممكنة</p>
+  </div>
+
+  <div class="card">
+
+    <label class="upload" for="videoInput">
+      <div class="upload-icon">🎬</div>
+      <strong>اختار الفيديو</strong>
+      <span>4K • 90FPS • HDR • MP4</span>
+    </label>
+
+    <input id="videoInput" type="file" accept="video/*">
+
+    <div id="info" class="info">
+      <div class="info-row">
+        <span class="label">الملف</span>
+        <span id="fileName" class="value">-</span>
+      </div>
+
+      <div class="info-row">
+        <span class="label">الحجم</span>
+        <span id="fileSize" class="value">-</span>
+      </div>
+
+      <div class="info-row">
+        <span class="label">الدقة</span>
+        <span id="resolution" class="value">-</span>
+      </div>
+
+      <div class="info-row">
+        <span class="label">FPS</span>
+        <span id="fps" class="value">-</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <label class="title" for="quality">جودة الضغط</label>
+
+    <select id="quality">
+      <option value="18">MAX — أعلى جودة</option>
+      <option value="20">HIGH — جودة عالية + حجم أقل</option>
+      <option value="22">BALANCED — حجم أصغر</option>
+    </select>
+
+    <div class="warning">
+      كلما كان الرقم أقل، تكون الجودة أعلى والحجم أكبر.
+      الإعداد الافتراضي MAX يستخدم CRF 18.
+    </div>
+
+    <button id="processBtn" class="process" disabled>
+      معالجة الفيديو
+    </button>
+
+    <div id="progressBox" class="progress-box">
+
+      <div class="progress-text">
+        <span id="status">جاري التحضير...</span>
+        <span id="percent">0%</span>
+      </div>
+
+      <div class="progress">
+        <div id="bar" class="bar"></div>
+      </div>
+
+    </div>
+
+    <div id="message" class="status"></div>
+
+    <a id="download" class="download">
+      ⬇️ حفظ الفيديو
+    </a>
+
+  </div>
+
+  <div class="note">
+    المعالجة تتم على جهازك مباشرة ولا يتم رفع الفيديو إلى سيرفر.
+    <br>
+    4K و90FPS يحتاجان مساحة وذاكرة ووقت معالجة أكبر على الآيفون.
+  </div>
+
+</div>
+
+
+<script type="module">
+
+  import { FFmpeg } from
+    "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js";
+
+  import {
+    fetchFile,
+    toBlobURL
+  } from
+    "https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js";
+
+
+  const ffmpeg = new FFmpeg();
+
+  const input = document.getElementById("videoInput");
+  const processBtn = document.getElementById("processBtn");
+  const quality = document.getElementById("quality");
+
+  const info = document.getElementById("info");
+  const fileName = document.getElementById("fileName");
+  const fileSize = document.getElementById("fileSize");
+  const resolution = document.getElementById("resolution");
+  const fpsText = document.getElementById("fps");
+
+  const progressBox = document.getElementById("progressBox");
+  const bar = document.getElementById("bar");
+  const percent = document.getElementById("percent");
+  const status = document.getElementById("status");
+  const message = document.getElementById("message");
+  const download = document.getElementById("download");
+
+
+  let selectedFile = null;
+  let loaded = false;
+
+
+  function formatSize(bytes) {
+
+    if (bytes < 1024 * 1024) {
+      return (bytes / 1024).toFixed(1) + " KB";
+    }
+
+    if (bytes < 1024 * 1024 * 1024) {
+      return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+    }
+
+    return (bytes / (1024 * 1024 * 1024)).toFixed(2) + " GB";
+  }
+
+
+  function setProgress(value, text) {
+
+    const p = Math.max(0, Math.min(100, value));
+
+    bar.style.width = p + "%";
+    percent.textContent = Math.round(p) + "%";
+
+    if (text) {
+      status.textContent = text;
+    }
+  }
+
+
+  function getVideoInfo(file) {
+
+    return new Promise((resolve) => {
+
+      const video = document.createElement("video");
+
+      video.preload = "metadata";
+
+      video.onloadedmetadata = () => {
+
+        let fps = "غير معروف";
+
+        if (video.duration && video.webkitDecodedFrameCount) {
+          fps = Math.round(
+            video.webkitDecodedFrameCount / video.duration
+          );
+        }
+
+        resolve({
+          width: video.videoWidth,
+          height: video.videoHeight,
+          fps: fps
+        });
+
+        URL.revokeObjectURL(video.src);
+      };
+
+      video.onerror = () => {
+
+        resolve({
+          width: "-",
+          height: "-",
+          fps: "-"
+        });
+
+        URL.revokeObjectURL(video.src);
+      };
+
+      video.src = URL.createObjectURL(file);
+
+    });
+
+  }
+
+
+  input.addEventListener("change", async () => {
+
+    selectedFile = input.files[0];
+
+    if (!selectedFile) {
+      processBtn.disabled = true;
+      return;
+    }
+
+    info.style.display = "block";
+    processBtn.disabled = false;
+
+    fileName.textContent = selectedFile.name;
+    fileSize.textContent = formatSize(selectedFile.size);
+
+    message.textContent = "جاري قراءة معلومات الفيديو...";
+
+    const data = await getVideoInfo(selectedFile);
+
+    resolution.textContent =
+      data.width + " × " + data.height;
+
+    fpsText.textContent =
+      data.fps === "غير معروف"
+        ? "تلقائي"
+        : data.fps + " FPS";
+
+    message.textContent = "الفيديو جاهز للمعالجة ✓";
+
+  });
+
+
+  async function loadFFmpeg() {
+
+    if (loaded) return;
+
+    message.textContent = "جاري تحميل محرك الضغط...";
+
+    /*
+      نستخدم نسخة Single Thread حتى تكون مناسبة
+      أكثر للمتصفح والأجهزة المحمولة.
+    */
+
+    const baseURL =
+      "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm";
+
+    await ffmpeg.load({
+
+      coreURL:
+        await toBlobURL(
+          `${baseURL}/ffmpeg-core.js`,
+          "text/javascript"
+        ),
+
+      wasmURL:
+        await toBlobURL(
+          `${baseURL}/ffmpeg-core.wasm`,
+          "application/wasm"
+        )
+
+    });
+
+    loaded = true;
+
+  }
+
+
+  ffmpeg.on("progress", ({ progress }) => {
+
+    const p = Math.max(
+      0,
+      Math.min(100, progress * 100)
+    );
+
+    setProgress(p, "جاري ضغط الفيديو...");
+
+  });
+
+
+  processBtn.addEventListener("click", async () => {
+
+    if (!selectedFile) return;
+
+    processBtn.disabled = true;
+    download.style.display = "none";
+    progressBox.style.display = "block";
+    message.textContent = "";
+
+    try {
+
+      await loadFFmpeg();
+
+      setProgress(1, "جاري تجهيز الفيديو...");
+
+      const inputName = "input." +
+        (
+          selectedFile.name.split(".").pop() || "mp4"
+        );
+
+      const outputName = "TikTok_MAX.mp4";
+
+      await ffmpeg.writeFile(
+        inputName,
+        await fetchFile(selectedFile)
+      );
+
+      const crf = quality.value;
+
+
+      /*
+        مهم:
+        لا نحدد scale ولا -r.
+
+        يعني:
+        - إذا الفيديو 4K يبقى 4K
+        - إذا الفيديو 90FPS نحاول إبقاء 90FPS
+        - إذا الفيديو 60FPS يبقى 60FPS
+        - ما في Upscale مصطنع
+      */
+
+      const args = [
+
+        "-i",
+        inputName,
+
+        "-map",
+        "0:v:0",
+
+        "-map",
+        "0:a?",
+
+        "-c:v",
+        "libx264",
+
+        "-preset",
+        "veryfast",
+
+        "-crf",
+        crf,
+
+        "-pix_fmt",
+        "yuv420p",
+
+        "-c:a",
+        "aac",
+
+        "-b:a",
+        "192k",
+
+        "-movflags",
+        "+faststart",
+
+        "-tag:v",
+        "avc1",
+
+        outputName
+
+      ];
+
+
+      setProgress(2, "بدأ ضغط الفيديو...");
+
+
+      await ffmpeg.exec(args);
+
+
+      setProgress(99, "جاري تجهيز الملف...");
+
+
+      const data = await ffmpeg.readFile(outputName);
+
+
+      const blob = new Blob(
+        [data.buffer],
+        {
+          type: "video/mp4"
+        }
+      );
+
+
+      const url = URL.createObjectURL(blob);
+
+
+      download.href = url;
+      download.download = "TikTok_MAX.mp4";
+      download.style.display = "block";
+
+      setProgress(100, "اكتملت المعالجة ✓");
+
+      message.textContent =
+        "الفيديو جاهز للنشر على TikTok.";
+
+      await ffmpeg.deleteFile(inputName);
+      await ffmpeg.deleteFile(outputName);
+
+    }
+
+    catch (error) {
+
+      console.error(error);
+
+      message.textContent =
+        "صار خطأ أثناء المعالجة. جرّب فيديو أصغر أو أعد تحميل الصفحة.";
+
+      progressBox.style.display = "none";
+
+    }
+
+    finally {
+
+      processBtn.disabled = false;
+
+    }
+
+  });
+
+</script>
+
+</body>
+</html>
