@@ -461,30 +461,24 @@
     const baseURL =
       "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm";
 
-    const [coreURL, wasmURL, workerURL] = await Promise.all([
-      toBlobURL(
-        `${baseURL}/ffmpeg-core.js`,
-        "text/javascript"
-      ),
+    try {
+      await ffmpeg.load({
+        coreURL: await toBlobURL(
+          `${baseURL}/ffmpeg-core.js`,
+          "text/javascript"
+        ),
+        wasmURL: await toBlobURL(
+          `${baseURL}/ffmpeg-core.wasm`,
+          "application/wasm"
+        )
+      });
 
-      toBlobURL(
-        `${baseURL}/ffmpeg-core.wasm`,
-        "application/wasm"
-      ),
-
-      toBlobURL(
-        `${baseURL}/ffmpeg-core.worker.js`,
-        "text/javascript"
-      )
-    ]);
-
-    await ffmpeg.load({
-      coreURL,
-      wasmURL,
-      workerURL
-    });
-
-    loaded = true;
+      loaded = true;
+    } catch (error) {
+      console.error("خطأ في تحميل FFmpeg:", error);
+      message.textContent = "خطأ في تحميل محرك الضغط. تأكد من الاتصال بالإنترنت وأعد المحاولة.";
+      throw error;
+    }
 
   }
 
