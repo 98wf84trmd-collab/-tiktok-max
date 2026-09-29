@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#0f172a">
-  <title>TikTok MAX - ضاغط الفيديو الأول</title>
+  <title>TikTok MAX - ضاغط الفيديو</title>
 
   <style>
     * {
@@ -467,20 +467,13 @@
 
 </div>
 
+<script async src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/ffmpeg.min.js"></script>
 
-<script type="module">
+<script>
 
-  import { FFmpeg } from
-    "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js";
+  const { FFmpeg, fetchFile } = FFmpeg;
 
-  import {
-    fetchFile,
-    toBlobURL
-  } from
-    "https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js";
-
-
-  const ffmpeg = new FFmpeg();
+  const ffmpeg = new FFmpeg.FFmpeg();
 
   const input = document.getElementById("videoInput");
   const processBtn = document.getElementById("processBtn");
@@ -499,85 +492,60 @@
   const message = document.getElementById("message");
   const download = document.getElementById("download");
 
-
   let selectedFile = null;
   let loaded = false;
 
-
   function formatSize(bytes) {
-
     if (bytes < 1024 * 1024) {
       return (bytes / 1024).toFixed(1) + " KB";
     }
-
     if (bytes < 1024 * 1024 * 1024) {
       return (bytes / (1024 * 1024)).toFixed(1) + " MB";
     }
-
     return (bytes / (1024 * 1024 * 1024)).toFixed(2) + " GB";
   }
 
-
   function setProgress(value, text) {
-
     const p = Math.max(0, Math.min(100, value));
-
     bar.style.width = p + "%";
     percent.textContent = Math.round(p) + "%";
-
     if (text) {
       status.textContent = text;
     }
   }
 
-
   function getVideoInfo(file) {
-
     return new Promise((resolve) => {
-
       const video = document.createElement("video");
-
       video.preload = "metadata";
 
       video.onloadedmetadata = () => {
-
         let fps = "تلقائي";
-
         if (video.duration && video.webkitDecodedFrameCount) {
-          fps = Math.round(
-            video.webkitDecodedFrameCount / video.duration
-          ) + " FPS";
+          fps = Math.round(video.webkitDecodedFrameCount / video.duration) + " FPS";
         }
-
         resolve({
           width: video.videoWidth,
           height: video.videoHeight,
           fps: fps
         });
-
         URL.revokeObjectURL(video.src);
       };
 
       video.onerror = () => {
-
         resolve({
           width: "-",
           height: "-",
           fps: "تلقائي"
         });
-
         URL.revokeObjectURL(video.src);
       };
 
       video.src = URL.createObjectURL(file);
-
     });
-
   }
 
-
   input.addEventListener("change", async () => {
-
     selectedFile = input.files[0];
 
     if (!selectedFile) {
@@ -599,51 +567,33 @@
     fpsText.textContent = data.fps;
 
     message.textContent = "✅ الفيديو جاهز للمعالجة";
-
   });
 
-
   async function loadFFmpeg() {
-
     if (loaded) return;
 
     message.textContent = "📥 جاري تحميل محرك الضغط...";
 
-    const baseURL =
-      "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm";
-
     try {
-      await ffmpeg.load({
-        coreURL: await toBlobURL(
-          `${baseURL}/ffmpeg-core.js`,
-          "text/javascript"
-        ),
-        wasmURL: await toBlobURL(
-          `${baseURL}/ffmpeg-core.wasm`,
-          "application/wasm"
-        )
+      ffmpeg.load({
+        coreURL: "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd/ffmpeg-core.js",
+        wasmURL: "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd/ffmpeg-core.wasm"
+      }).then(() => {
+        loaded = true;
       });
-
-      loaded = true;
     } catch (error) {
-      console.error("خطأ FFmpeg:", error);
-      message.textContent = "❌ خطأ في تحميل المحرك. تأكد من الاتصال بالإنترنت وأعد المحاولة.";
+      console.error("FFmpeg load error:", error);
+      message.textContent = "❌ خطأ في تحميل المحرك. جرّب إعادة تحميل الصفحة.";
       throw error;
     }
-
   }
 
-
   ffmpeg.on("progress", ({ progress }) => {
-
     const p = Math.max(0, Math.min(100, progress * 100));
     setProgress(p, "⚙️ جاري ضغط الفيديو...");
-
   });
 
-
   processBtn.addEventListener("click", async () => {
-
     if (!selectedFile) return;
 
     processBtn.disabled = true;
@@ -652,22 +602,14 @@
     message.textContent = "";
 
     try {
-
       await loadFFmpeg();
 
       setProgress(1, "📝 جاري تجهيز الفيديو...");
 
-      const inputName = "input." +
-        (
-          selectedFile.name.split(".").pop() || "mp4"
-        );
-
+      const inputName = "input." + (selectedFile.name.split(".").pop() || "mp4");
       const outputName = "TikTok_MAX.mp4";
 
-      await ffmpeg.writeFile(
-        inputName,
-        await fetchFile(selectedFile)
-      );
+      await ffmpeg.writeFile(inputName, await fetchFile(selectedFile));
 
       const crf = quality.value;
 
@@ -710,20 +652,12 @@
       await ffmpeg.deleteFile(outputName);
 
     } catch (error) {
-
       console.error(error);
-
-      message.textContent =
-        "❌ خطأ أثناء المعالجة. جرّب فيديو أصغر أو أعد تحميل الصفحة.";
-
+      message.textContent = "❌ خطأ أثناء المعالجة. جرّب فيديو أصغر أو أعد تحميل الصفحة.";
       progressBox.style.display = "none";
-
     } finally {
-
       processBtn.disabled = false;
-
     }
-
   });
 
 </script>
