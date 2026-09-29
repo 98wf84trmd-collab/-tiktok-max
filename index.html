@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#000000">
-  <title>TikTok MAX</title>
+  <meta name="theme-color" content="#0f172a">
+  <title>TikTok MAX - ضاغط الفيديو الأول</title>
 
   <style>
     * {
@@ -15,70 +15,115 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background: #050505;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f4c75 100%);
       color: white;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
     }
 
     .app {
       width: 100%;
-      max-width: 600px;
+      max-width: 650px;
       margin: auto;
-      padding: 25px 18px 40px;
+      padding: 30px 20px 50px;
     }
 
     .logo {
       text-align: center;
-      margin: 15px 0 30px;
+      margin: 20px 0 40px;
+      animation: fadeInDown 0.8s ease-out;
     }
 
     .logo h1 {
       margin: 0;
-      font-size: 34px;
-      font-weight: 800;
-      letter-spacing: -1px;
+      font-size: 42px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #ec4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .logo p {
-      margin: 8px 0 0;
-      color: #999;
-      font-size: 14px;
+      margin: 12px 0 0;
+      color: #cbd5e1;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(96, 165, 250, 0.1);
+      border: 1px solid rgba(96, 165, 250, 0.3);
+      color: #60a5fa;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 10px;
     }
 
     .card {
-      background: #111;
-      border: 1px solid #252525;
-      border-radius: 20px;
-      padding: 20px;
-      margin-bottom: 15px;
+      background: rgba(30, 41, 59, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(96, 165, 250, 0.2);
+      border-radius: 24px;
+      padding: 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 32px rgba(15, 23, 42, 0.3);
+      animation: fadeInUp 0.8s ease-out;
     }
 
     .upload {
-      border: 2px dashed #333;
-      border-radius: 18px;
-      padding: 35px 15px;
+      border: 2px dashed rgba(96, 165, 250, 0.4);
+      border-radius: 20px;
+      padding: 50px 20px;
       text-align: center;
       cursor: pointer;
+      transition: all 0.3s ease;
+      background: rgba(15, 76, 117, 0.1);
+    }
+
+    .upload:hover {
+      border-color: rgba(96, 165, 250, 0.8);
+      background: rgba(96, 165, 250, 0.05);
+      transform: translateY(-2px);
     }
 
     .upload:active {
-      transform: scale(.99);
+      transform: scale(0.98);
     }
 
     .upload-icon {
-      font-size: 42px;
-      margin-bottom: 10px;
+      font-size: 56px;
+      margin-bottom: 15px;
+      display: inline-block;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
     }
 
     .upload strong {
       display: block;
-      font-size: 18px;
-      margin-bottom: 6px;
+      font-size: 20px;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
     }
 
     .upload span {
-      color: #888;
+      color: #94a3b8;
       font-size: 13px;
+      display: block;
+      line-height: 1.6;
     }
 
     input[type="file"] {
@@ -87,14 +132,27 @@
 
     .info {
       display: none;
-      margin-top: 15px;
+      margin-top: 20px;
+      animation: slideDown 0.4s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .info-row {
       display: flex;
       justify-content: space-between;
-      padding: 9px 0;
-      border-bottom: 1px solid #222;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(96, 165, 250, 0.1);
       font-size: 14px;
     }
 
@@ -103,114 +161,215 @@
     }
 
     .label {
-      color: #888;
+      color: #94a3b8;
+      font-weight: 500;
     }
 
     .value {
-      font-weight: 600;
+      font-weight: 700;
+      color: #60a5fa;
     }
 
     label.title {
       display: block;
-      margin-bottom: 10px;
+      margin-bottom: 14px;
       font-weight: 700;
+      font-size: 16px;
+      background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     select {
       width: 100%;
-      background: #1b1b1b;
+      background: rgba(15, 23, 42, 0.8);
       color: white;
-      border: 1px solid #333;
-      border-radius: 12px;
-      padding: 14px;
+      border: 1px solid rgba(96, 165, 250, 0.3);
+      border-radius: 14px;
+      padding: 14px 16px;
       font-size: 15px;
       outline: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    select:hover {
+      border-color: rgba(96, 165, 250, 0.6);
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    select:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+    }
+
+    select option {
+      background: #1e293b;
+      color: white;
     }
 
     button {
       width: 100%;
       border: 0;
       border-radius: 14px;
-      padding: 16px;
-      margin-top: 15px;
+      padding: 16px 24px;
+      margin-top: 18px;
       font-size: 17px;
       font-weight: 800;
-      color: white;
-      background: #222;
+      color: #0f172a;
+      background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
       cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 24px rgba(96, 165, 250, 0.3);
+    }
+
+    button:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(96, 165, 250, 0.4);
+    }
+
+    button:active:not(:disabled) {
+      transform: translateY(0);
     }
 
     button:disabled {
-      opacity: .45;
-      cursor: default;
-    }
-
-    .process {
-      background: white;
-      color: black;
+      opacity: 0.5;
+      cursor: not-allowed;
     }
 
     .progress-box {
       display: none;
-      margin-top: 20px;
+      margin-top: 24px;
+      animation: slideDown 0.4s ease-out;
     }
 
     .progress-text {
       display: flex;
       justify-content: space-between;
       font-size: 13px;
-      margin-bottom: 8px;
-      color: #aaa;
+      margin-bottom: 10px;
+      color: #cbd5e1;
     }
 
     .progress {
-      height: 8px;
+      height: 10px;
       width: 100%;
-      background: #252525;
+      background: rgba(15, 76, 117, 0.2);
       border-radius: 20px;
       overflow: hidden;
+      border: 1px solid rgba(96, 165, 250, 0.2);
     }
 
     .bar {
       width: 0%;
       height: 100%;
-      background: white;
-      transition: width .2s;
+      background: linear-gradient(90deg, #60a5fa 0%, #a78bfa 100%);
+      transition: width 0.3s ease;
+      border-radius: 20px;
     }
 
     .status {
       text-align: center;
-      color: #aaa;
+      color: #94a3b8;
       font-size: 13px;
       margin-top: 12px;
       min-height: 20px;
+      font-weight: 500;
     }
 
     .download {
       display: none;
-      background: white;
-      color: black;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
       text-decoration: none;
       text-align: center;
-      padding: 16px;
+      padding: 16px 24px;
       border-radius: 14px;
       font-weight: 800;
-      margin-top: 15px;
+      margin-top: 18px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+      animation: slideDown 0.4s ease-out;
+    }
+
+    .download:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(16, 185, 129, 0.4);
+    }
+
+    .download:active {
+      transform: translateY(0);
     }
 
     .note {
-      color: #777;
-      font-size: 12px;
-      line-height: 1.7;
+      color: #cbd5e1;
+      font-size: 13px;
+      line-height: 1.8;
       text-align: center;
-      margin-top: 20px;
+      margin-top: 28px;
+      padding: 20px;
+      background: rgba(96, 165, 250, 0.05);
+      border: 1px solid rgba(96, 165, 250, 0.1);
+      border-radius: 16px;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
     }
 
     .warning {
-      color: #aaa;
-      font-size: 12px;
+      color: #fbbf24;
+      font-size: 13px;
       line-height: 1.7;
-      margin-top: 12px;
+      margin-top: 14px;
+      padding: 12px 14px;
+      background: rgba(251, 191, 36, 0.1);
+      border-left: 3px solid #fbbf24;
+      border-radius: 6px;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .app {
+        padding: 20px 16px 40px;
+      }
+
+      .logo h1 {
+        font-size: 32px;
+      }
+
+      .card {
+        padding: 20px;
+        border-radius: 20px;
+      }
+
+      .upload {
+        padding: 40px 16px;
+      }
+
+      .upload-icon {
+        font-size: 48px;
+      }
     }
   </style>
 </head>
@@ -220,38 +379,39 @@
 <div class="app">
 
   <div class="logo">
-    <h1>TikTok MAX</h1>
-    <p>ضغط الفيديو مع الحفاظ على أعلى جودة ممكنة</p>
+    <h1>✨ TikTok MAX</h1>
+    <p>ضاغط الفيديو الأول بالذكاء الاصطناعي</p>
+    <div class="badge">🚀 سرعة البرق + أعلى جودة</div>
   </div>
 
   <div class="card">
 
     <label class="upload" for="videoInput">
       <div class="upload-icon">🎬</div>
-      <strong>اختار الفيديو</strong>
-      <span>4K • 90FPS • HDR • MP4</span>
+      <strong>اختر الفيديو</strong>
+      <span>4K • 90FPS • HDR • MP4 • WebM<br>اسحب أو انقر للرفع</span>
     </label>
 
     <input id="videoInput" type="file" accept="video/*">
 
     <div id="info" class="info">
       <div class="info-row">
-        <span class="label">الملف</span>
+        <span class="label">📁 اسم الملف</span>
         <span id="fileName" class="value">-</span>
       </div>
 
       <div class="info-row">
-        <span class="label">الحجم</span>
+        <span class="label">💾 حجم الملف</span>
         <span id="fileSize" class="value">-</span>
       </div>
 
       <div class="info-row">
-        <span class="label">الدقة</span>
+        <span class="label">📺 الدقة</span>
         <span id="resolution" class="value">-</span>
       </div>
 
       <div class="info-row">
-        <span class="label">FPS</span>
+        <span class="label">⚡ عدد الإطارات</span>
         <span id="fps" class="value">-</span>
       </div>
     </div>
@@ -260,21 +420,20 @@
 
   <div class="card">
 
-    <label class="title" for="quality">جودة الضغط</label>
+    <label class="title" for="quality">🎯 اختر جودة الضغط</label>
 
     <select id="quality">
-      <option value="18">MAX — أعلى جودة</option>
-      <option value="20">HIGH — جودة عالية + حجم أقل</option>
-      <option value="22">BALANCED — حجم أصغر</option>
+      <option value="18">👑 MAX - أعلى جودة (حجم أكبر)</option>
+      <option value="20">⭐ HIGH - جودة عالية + حجم معقول</option>
+      <option value="22">⚡ BALANCED - حجم أصغر (جودة جيدة)</option>
     </select>
 
     <div class="warning">
-      كلما كان الرقم أقل، تكون الجودة أعلى والحجم أكبر.
-      الإعداد الافتراضي MAX يستخدم CRF 18.
+      💡 كلما كان الرقم أقل = جودة أعلى وحجم أكبر. الافتراضي MAX يستخدم CRF 18 (الأفضل)
     </div>
 
     <button id="processBtn" class="process" disabled>
-      معالجة الفيديو
+      🚀 معالجة الفيديو الآن
     </button>
 
     <div id="progressBox" class="progress-box">
@@ -293,15 +452,17 @@
     <div id="message" class="status"></div>
 
     <a id="download" class="download">
-      ⬇️ حفظ الفيديو
+      ⬇️ تحميل الفيديو المضغوط
     </a>
 
   </div>
 
   <div class="note">
-    المعالجة تتم على جهازك مباشرة ولا يتم رفع الفيديو إلى سيرفر.
+    🔒 آمن 100% - المعالجة تحدث على جهازك مباشرة
     <br>
-    4K و90FPS يحتاجان مساحة وذاكرة ووقت معالجة أكبر على الآيفون.
+    <strong>لا يتم رفع أي ملفات لسيرفر خارجي</strong>
+    <br><br>
+    ⏱️ الفيديو 4K و90FPS قد يحتاج وقت أطول على الهاتف
   </div>
 
 </div>
@@ -380,12 +541,12 @@
 
       video.onloadedmetadata = () => {
 
-        let fps = "غير معروف";
+        let fps = "تلقائي";
 
         if (video.duration && video.webkitDecodedFrameCount) {
           fps = Math.round(
             video.webkitDecodedFrameCount / video.duration
-          );
+          ) + " FPS";
         }
 
         resolve({
@@ -402,7 +563,7 @@
         resolve({
           width: "-",
           height: "-",
-          fps: "-"
+          fps: "تلقائي"
         });
 
         URL.revokeObjectURL(video.src);
@@ -430,19 +591,14 @@
     fileName.textContent = selectedFile.name;
     fileSize.textContent = formatSize(selectedFile.size);
 
-    message.textContent = "جاري قراءة معلومات الفيديو...";
+    message.textContent = "⏳ جاري قراءة معلومات الفيديو...";
 
     const data = await getVideoInfo(selectedFile);
 
-    resolution.textContent =
-      data.width + " × " + data.height;
+    resolution.textContent = data.width + " × " + data.height;
+    fpsText.textContent = data.fps;
 
-    fpsText.textContent =
-      data.fps === "غير معروف"
-        ? "تلقائي"
-        : data.fps + " FPS";
-
-    message.textContent = "الفيديو جاهز للمعالجة ✓";
+    message.textContent = "✅ الفيديو جاهز للمعالجة";
 
   });
 
@@ -451,12 +607,7 @@
 
     if (loaded) return;
 
-    message.textContent = "جاري تحميل محرك الضغط...";
-
-    /*
-      نستخدم نسخة Single Thread حتى تكون مناسبة
-      أكثر للمتصفح والأجهزة المحمولة.
-    */
+    message.textContent = "📥 جاري تحميل محرك الضغط...";
 
     const baseURL =
       "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm";
@@ -475,8 +626,8 @@
 
       loaded = true;
     } catch (error) {
-      console.error("خطأ في تحميل FFmpeg:", error);
-      message.textContent = "خطأ في تحميل محرك الضغط. تأكد من الاتصال بالإنترنت وأعد المحاولة.";
+      console.error("خطأ FFmpeg:", error);
+      message.textContent = "❌ خطأ في تحميل المحرك. تأكد من الاتصال بالإنترنت وأعد المحاولة.";
       throw error;
     }
 
@@ -485,12 +636,8 @@
 
   ffmpeg.on("progress", ({ progress }) => {
 
-    const p = Math.max(
-      0,
-      Math.min(100, progress * 100)
-    );
-
-    setProgress(p, "جاري ضغط الفيديو...");
+    const p = Math.max(0, Math.min(100, progress * 100));
+    setProgress(p, "⚙️ جاري ضغط الفيديو...");
 
   });
 
@@ -508,7 +655,7 @@
 
       await loadFFmpeg();
 
-      setProgress(1, "جاري تجهيز الفيديو...");
+      setProgress(1, "📝 جاري تجهيز الفيديو...");
 
       const inputName = "input." +
         (
@@ -524,107 +671,54 @@
 
       const crf = quality.value;
 
-
-      /*
-        مهم:
-        لا نحدد scale ولا -r.
-
-        يعني:
-        - إذا الفيديو 4K يبقى 4K
-        - إذا الفيديو 90FPS نحاول إبقاء 90FPS
-        - إذا الفيديو 60FPS يبقى 60FPS
-        - ما في Upscale مصطنع
-      */
-
       const args = [
-
-        "-i",
-        inputName,
-
-        "-map",
-        "0:v:0",
-
-        "-map",
-        "0:a?",
-
-        "-c:v",
-        "libx264",
-
-        "-preset",
-        "veryfast",
-
-        "-crf",
-        crf,
-
-        "-pix_fmt",
-        "yuv420p",
-
-        "-c:a",
-        "aac",
-
-        "-b:a",
-        "192k",
-
-        "-movflags",
-        "+faststart",
-
-        "-tag:v",
-        "avc1",
-
+        "-i", inputName,
+        "-map", "0:v:0",
+        "-map", "0:a?",
+        "-c:v", "libx264",
+        "-preset", "veryfast",
+        "-crf", crf,
+        "-pix_fmt", "yuv420p",
+        "-c:a", "aac",
+        "-b:a", "192k",
+        "-movflags", "+faststart",
+        "-tag:v", "avc1",
         outputName
-
       ];
 
-
-      setProgress(2, "بدأ ضغط الفيديو...");
-
+      setProgress(2, "🔄 بدأ ضغط الفيديو...");
 
       await ffmpeg.exec(args);
 
-
-      setProgress(99, "جاري تجهيز الملف...");
-
+      setProgress(99, "✨ جاري تجهيز الملف...");
 
       const data = await ffmpeg.readFile(outputName);
 
-
-      const blob = new Blob(
-        [data.buffer],
-        {
-          type: "video/mp4"
-        }
-      );
-
+      const blob = new Blob([data.buffer], { type: "video/mp4" });
 
       const url = URL.createObjectURL(blob);
-
 
       download.href = url;
       download.download = "TikTok_MAX.mp4";
       download.style.display = "block";
 
-      setProgress(100, "اكتملت المعالجة ✓");
+      setProgress(100, "🎉 اكتملت المعالجة!");
 
-      message.textContent =
-        "الفيديو جاهز للنشر على TikTok.";
+      message.textContent = "✅ الفيديو جاهز للنشر على TikTok 🚀";
 
       await ffmpeg.deleteFile(inputName);
       await ffmpeg.deleteFile(outputName);
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
       console.error(error);
 
       message.textContent =
-        "صار خطأ أثناء المعالجة. جرّب فيديو أصغر أو أعد تحميل الصفحة.";
+        "❌ خطأ أثناء المعالجة. جرّب فيديو أصغر أو أعد تحميل الصفحة.";
 
       progressBox.style.display = "none";
 
-    }
-
-    finally {
+    } finally {
 
       processBtn.disabled = false;
 
